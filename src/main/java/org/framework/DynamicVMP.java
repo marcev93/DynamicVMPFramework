@@ -392,9 +392,13 @@ public class DynamicVMP {
         String parameterFile = args[0];
         /*#####*/
         String parameterFile1 = args[1];
+		
+		String parameterFile2 = args[2];
+		
+		
 
         /*#####*/        
-        loadParameters(scenariosFiles, parameterFile, parameterFile1);
+        loadParameters(scenariosFiles, parameterFile, parameterFile1, parameterFile2);
 
         logger.log(Level.INFO, "EXECUTING EXPERIMENTS");
 
@@ -421,12 +425,14 @@ public class DynamicVMP {
      */
     
             /*#####*/
-    private static void loadParameters(ArrayList<String> scenariosFiles, String parameterFile, String parameterFile1) throws IOException {
+    private static void loadParameters(ArrayList<String> scenariosFiles, String parameterFile, String parameterFile1, String parameterFile2) throws IOException {
 
         try (Stream<String> stream = Files.lines(Paths.get(parameterFile));
-             Stream<String> stream1 = Files.lines(Paths.get(parameterFile1))) {
+             Stream<String> stream1 = Files.lines(Paths.get(parameterFile1));
+			 Stream<String> stream2 = Files.lines(Paths.get(parameterFile2));
+			  Stream<String> aux = Stream.concat(stream, stream1)) {
      
-            Utils.loadParameter(scenariosFiles, Stream.concat(stream,stream1));
+            Utils.loadParameter(scenariosFiles, Stream.concat(aux,stream2));
         } catch (IOException e) {
             Logger.getLogger(DynamicVMP.DYNAMIC_VMP).log(Level.SEVERE, "Error trying to load experiments parameters.");
             throw e;
